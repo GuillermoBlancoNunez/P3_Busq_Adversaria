@@ -1,0 +1,14 @@
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\bin\Debug\net9.0\TicTacToe.exe
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\bin\Debug\net9.0\TicTacToe.deps.json
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\bin\Debug\net9.0\TicTacToe.runtimeconfig.json
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\bin\Debug\net9.0\TicTacToe.dll
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\bin\Debug\net9.0\TicTacToe.pdb
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.AssemblyInfoInputs.cache
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.AssemblyInfo.cs
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.csproj.CoreCompileInputs.cache
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.dll
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\refint\TicTacToe.dll
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.pdb
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\TicTacToe.genruntimeconfig.cache
+C:\Users\blanc\OneDrive\Escritorio\School\IA_2_2024-2025\Cuatrimestre_4\ABIA\Prácticas\P3_Busq_Adversaria\obj\Debug\net9.0\ref\TicTacToe.dll
