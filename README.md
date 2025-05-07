@@ -4,145 +4,58 @@
 
 ---
 
-## 1. AGENTE
+## División de clases
 
-### 1.1. Variables `AGENT` y `HUMAN` y constructor clase **Agent**
+El código se divide en ocho clases. El objetivo de esta división es independizar las clases entre sí y que cada clase cumpla una sola función. De esta forma si hace falta añadir o modificar funcionalidades se no hace falta cambiar todas las clases. Además, de esta forma se pueden reutilizar clases en proyectos futuros, y se pueden ejecutar unit test en cada clase para ver si hay algún fallo y poder identificar rápido dónde está.
 
-* **¿Qué hace?** Define con dos enteros qué símbolo, 1 para 'X' o -1 para 'O', representa al agente y al humano.
-* **OBJETIVO** Evitar valores mágicos y facilitar:
+A continuación se explicará cada clase individualmente:<br><br><br>
 
-  * Reutilizar el agente con distintos símbolos (X/O).
-  * Ajustar configuraciones sin cambiar la lógica.
-  
-  De esta forma, se puede crear un agente que busque la victoria del usuario 'X' (`new Agent(1, -1)`) o uno que busque la victoria del usuario 'O' (`new Agent(-1, 1)`). Esto es especialmente útil en el modo de juego Agente Vs Agente.
+## class Player
+
+Clase muy corta que hace de clase padre de las clases Agent_Player y Human_Player. Se crea para que en el resto del código no se tenga que especificar si el jugador es humano o agente. El único método que tiene es GetMove, introduciendo el tablero, que después se modificará en las clases hijas. 
 
 ```csharp
-private int AGENT;
-private int HUMAN;
-public Agent(int AGENT, int HUMAN) 
+public interface Player 
 {
-    this.AGENT = AGENT;
-    this.HUMAN = HUMAN;
+        Move GetMove(Board board);
 }
-```
+``` 
+<br><br><br><br><br>
 
-### 1.2. Método `NextMove`
+## class Agent_Player
 
-* **¿Qué hace?** Recorre el tablero buscando celdas vacías en las que pueda jugar, simula cada posible jugada del agente evaluando la posibilidad de victoria haciendo esa jugada y retorna la posición que más acerque a la victoria al agente.
-* **OBJETIVO** El objetivo del agente es minimizar la ventaja del adversario (agente es jugador MIN).
-
-### 1.3. Función `Minimax` recursiva
-
-* **¿Qué hace?** Explora exhaustivamente el árbol de juego desde el estado actual hasta nodos terminales, asigna un valor de utilidad y propaga esos valores hacia arriba para elegir la mejor jugada.
-* **OBJETIVO**
-
-  * Reflejar fielmente la teoría de búsqueda adversaria para un agente óptimo.
-  * Mantener la implementación clara y modular, preparando el terreno para optimizaciones (poda alpha‑beta, heurísticas).
-
-**Implementación paso a paso:**
-
+Clase hija de la clase `Player` que hereda su método GetMove. El constructor toma como parámetros el símbolo del agente y del humano, tomados como enteros (1 para símbolo X, -1 para símbolo O), para saber de cuál símbolo del tablero busca la victoria el agente. 
+El método GetMove toma el tablero actual y llama al método estático FindBestMove de la clase MinimaxEngine pasándole el tablero y los símbolos de humano y agente. 
 ```csharp
-int Minimax(int[,] board, bool turnHuman) {
-    // 1. Caso base: estado terminal
-    if (Win(HUMAN, board))      // si el humano gana
-        return +1;              // utilidad máxima para MAX
-    if (Win(AGENT, board))      // si el agente gana
-        return -1;              // utilidad mínima para MIN
-    if (Tie(board))             // si empate
-        return 0;               // utilidad neutra
-
-    // 2. Inicializar mejor valor según tipo de turno
-    if (turnHuman) {
-        // MAX: el humano busca maximizar su utilidad
-        int bestValue = int.MinValue;
-        // 2.1. Generar sucesores: probar cada celda vacía
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i, j] == 0) {
-                    board[i, j] = HUMAN;                         // simular movimiento
-                    int eval = Minimax(board, false);           // evaluar recursivamente
-                    board[i, j] = 0;                             // deshacer (backtracking)
-                    bestValue = Math.Max(bestValue, eval);       // elegir el mayor
-                }
-            }
+public Move GetMove(Board board) 
+        {
+            return MinimaxEngine.FindBestMove(board, agentSymbol, humanSymbol);
         }
-        return bestValue;
-    } else {
-        // MIN: el agente busca minimizar la utilidad del humano
-        int bestValue = int.MaxValue;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i, j] == 0) {
-                    board[i, j] = AGENT;
-                    int eval = Minimax(board, true);
-                    board[i, j] = 0;
-                    bestValue = Math.Min(bestValue, eval);       // elegir el menor
-                }
-            }
-        }
-        return bestValue;
-    }
-}
 ```
-El algoritmo Minimax se implementa de la siguiente forma: 
+Al ser un método estático no se crea una instancia de la clase MinimaxEngine para llamar a su método FindBestMove.<br><br><br><br><br>
 
-1. **Parámetros**:
+## class Human_Player
 
-   * `board`: matriz 3×3 con valores `1`, `-1` o `0`.
-   * `turnHuman`: `true` para turno MAX (humano), `false` para MIN (agente).
-2. **Casos base**: determinan si el estado es victoria, derrota o empate y devuelven la utilidad correspondiente.
-3. **Generación de sucesores**: doble bucle recorre celdas vacías, simulando cada posible movimiento.
-4. **Backtracking**: tras cada llamada recursiva, el estado original se restaura para explorar otras ramas sin interferencias.
-5. **Propagación de valores**:
+La otra clase hija de la clase `Player`, también hereda su método GetMove. En este caso el constructor toma como parámetros el símbolo que representa en el tablero  también como entero (1 para X y -1 para O), y también el símbolo en string ("X" o "O").
 
-   * En MAX, se toma el máximo de las utilidades de los sucesores.
-   * En MIN, se toma el mínimo.
+El método GetMove toma el tablero actual como parámetro. Crea un bucle en el que se solicita una entrada por pantalla al usuario pidiendo una posición en el formato `row, col`. Este bucle solo se corta cuando se encuentra una entrada de una posición válida y vacía y esta se devuelve. En el bucle se hacen tres comprobaciones. Primero que la entrada dada no sea un valor nulo ni esté en blanco. Si el if es cierto, entonces se muestra un mensaje de error por pantalla y el bucle vuelve a empezar.
+```csharp 
+if (string.IsNullOrWhiteSpace(input))
+```
+Después se divide la entrada, separando en cada coma y poniendo las partes en una lista de strings. Con esta lista se efectúa la segunda comprobación. En esta se comprueba si la lista tiene solo dos elementos (row y col), si estos son números enteros y son menores que tres pero mayores o igual a cero. 
+```csharp
+if (parts.Length == 2
+                    && int.TryParse(parts[0], out int row)
+                    && int.TryParse(parts[1], out int col)
+                    && row >= 0 && row < 3 && col >= 0 && col < 3)
+```
+Si esta segunda comprobación se pasa entonces se entra en la tercera y última comprobación, en la que se comprueba si la celda está ocupada o vacía. Para esto se utiliza el método IsEmpty de la clase Board. Como este método no es estático se efectúa utilizando la instancia de Board que se pasa como parámetro en la función. Este método toma como parámetros la fila y columna (row y col) que se dieron de entrada. Si está vacía esa posición el método GetMove devuelve una nueva instancia de la clase Move con los valores dados y comprobados de row y col. 
+```csharp
+if (board.IsEmpty(row, col)) 
+                    {
+                        return new Move(row, col);
+                    }
 
-Este diseño garantiza una exploración completa y una correcta toma de decisiones bajo el modelo de adversarial search.
-
----
-
-## 2. Program.cs: interfaz y flujo de juego
-
-### 2.1. Métodos de juego (`PlayerVsPlayer`, `PlayerVsAgent`, `AgentVsAgent`)
-
-* **¿Qué hace?** Configuran quiénes juegan (humano o agente) y lanzan la mecánica común.
-* **¿Por qué?**
-
-  * Mantener claridad: cada modo separado dedica su configuración propia.
-  * Facilitar la incorporación de nuevos modos sin tocar la lógica interna.
-
-### 2.2. Función genérica `PlayGame`
-
-* **¿Qué hace?** Gestiona el bucle de turnos usando delegados para obtener movimientos de X y O.
-* **OBJETIVO**
-
-  * Desacoplar la lógica de turno de quién toma la decisión.
-  * Evitar duplicar el bucle en cada modo de juego.
-
-### 2.3. Lectura y validación `Input`
-
-* **¿Qué hace?** Pide fila y columna al usuario, verifica que la posición dada esté en el formato correcto, dentro de rango y libre.
-* **OBJETIVO**
-
-  * Evitar errores de índice y mantener la experiencia fluida.
-  * Informar al usuario con mensajes claros en caso de entradas inválidas.
-
-### 2.4. Utilidades de resultado (`Win`, `Tie`, `PrintBoard`)
-
-* **¿Qué hacen?** Verificar condiciones de victoria/empate e imprimir el tablero en consola.
-* **OBJETIVO**
-
-  * Seguir el principio de responsabilidad única: cada función hace una sola tarea.
-  * Facilitar tests unitarios de la lógica de victoria sin necesidad de UI.
-
----
-
-## 3. Ventajas del enfoque Minimax
-
-* **Óptimo contra adversario perfecto:** garantiza la mejor estrategia defensiva y ofensiva.
-* **Transparente y depurable:** cada valor de utilidad se asigna explícitamente.
-* **Base para mejoras:** se puede introducir poda alpha-beta o heurísticas sin reestructurar el código.
-
----
+```
+En caso de que alguna de estas dos comprobaciones sean falsas, se ejecuta un else que muestra un mensaje de error y finaliza la iteración, reiniciando el bucle de nuevo.
 
