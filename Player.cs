@@ -1,4 +1,4 @@
-public interface Player 
+public interface Player
 {
         Move GetMove(Board board);
 }
