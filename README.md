@@ -21,22 +21,9 @@ public interface Player
 }
 ``` 
 <br><br><br><br><br>
-
-## class Agent_Player
-
-Clase hija de la clase `Player` que hereda su método GetMove. El constructor toma como parámetros el símbolo del agente y del humano, tomados como enteros (1 para símbolo X, -1 para símbolo O), para saber de cuál símbolo del tablero busca la victoria el agente. 
-El método GetMove toma el tablero actual y llama al método estático FindBestMove de la clase MinimaxEngine pasándole el tablero y los símbolos de humano y agente. 
-```csharp
-public Move GetMove(Board board) 
-        {
-            return MinimaxEngine.FindBestMove(board, agentSymbol, humanSymbol);
-        }
-```
-Al ser un método estático no se crea una instancia de la clase MinimaxEngine para llamar a su método FindBestMove.<br><br><br><br><br>
-
 ## class Human_Player
 
-La otra clase hija de la clase `Player`, también hereda su método GetMove. En este caso el constructor toma como parámetros el símbolo que representa en el tablero  también como entero (1 para X y -1 para O), y también el símbolo en string ("X" o "O").
+Clase hija de la clase `Player` que hereda su método GetMove. En este caso el constructor toma como parámetros el símbolo que representa en el tablero  también como entero (1 para X y -1 para O), y también el símbolo en string ("X" o "O").
 
 El método GetMove toma el tablero actual como parámetro. Crea un bucle en el que se solicita una entrada por pantalla al usuario pidiendo una posición en el formato `row, col`. Este bucle solo se corta cuando se encuentra una entrada de una posición válida y vacía y esta se devuelve. En el bucle se hacen tres comprobaciones. Primero que la entrada dada no sea un valor nulo ni esté en blanco. Si el if es cierto, entonces se muestra un mensaje de error por pantalla y el bucle vuelve a empezar.
 ```csharp 
@@ -58,4 +45,25 @@ if (board.IsEmpty(row, col))
 
 ```
 En caso de que alguna de estas dos comprobaciones sean falsas, se ejecuta un else que muestra un mensaje de error y finaliza la iteración, reiniciando el bucle de nuevo.
+<br><br><br><br><br>
 
+## class Agent_Player
+
+La otra clase hija de la clase `Player`, también hereda su método GetMove. El constructor toma como parámetros el símbolo del agente y del humano, tomados como enteros (1 para símbolo X, -1 para símbolo O), para saber de cuál símbolo del tablero busca la victoria el agente. 
+El método GetMove toma el tablero actual y llama al método estático FindBestMove de la clase MinimaxEngine pasándole el tablero y los símbolos de humano y agente. 
+```csharp
+public Move GetMove(Board board) 
+        {
+            return MinimaxEngine.FindBestMove(board, agentSymbol, humanSymbol);
+        }
+```
+Al ser un método estático no se crea una instancia de la clase MinimaxEngine para llamar a su método FindBestMove.
+<br><br><br><br><br>
+
+## class MinimaxClass
+
+Clase que implementa el algoritmo minimax, con padas alfa-beta y que penaliza la profundidad del nodo terminal. 
+
+La clase es llamada desde la clase Agent_Player en su función GetMove (como se puede ver más arriba) pasándole como parámetros el tablero y los símbolos que deban ganar (agentSymbol) y el que deba perder (huanSymbol) como enteros a la función estática FindBestMove. Al ser una función estática, nunca se crea una instancia de la clase MinimaxClass. 
+
+Para empezar se crean dos variables `bestValue` y `bestMove`en las que se guardan incialmente el valor entero mínimo en C# y un movimiento inválido (-1, -1) respectivamente. Ahora se entra a un bucle en el que se recorren todos los movimientos válidos con el tablero actual. En cada iteración se aplicará el movimiento para el agente y se buscará el valor de ese movimiento llamando a la función Minimax. Después se deshará el movimiento hecho, para que quede en una mera simulación y solo si el valor del movimiento es mayor que el mejor valor entonces el movimiento estudiado pasa a ser el mejor valor y el mejor movimiento. Una vez se hayan estudiado todos los movimiento posibles en el tablero, la función devolverá el mejor movimiento. 
