@@ -32,7 +32,7 @@ public static class MinimaxClass
                 board.ApplyMove(move, humanSymbol);
                 worst = Math.Min(worst, Minimax(board, false, alpha, beta, depth + 1, agentSymbol, humanSymbol));
                 board.ApplyMove(move, 0);
-                beta = Math.Max(beta, worst);
+                beta = Math.Min(beta, worst);
                 if (beta <= alpha) break;
             }
             return worst;
@@ -45,7 +45,7 @@ public static class MinimaxClass
                 board.ApplyMove(move, agentSymbol);
                 best = Math.Max(best, Minimax(board, true, alpha, beta, depth + 1, agentSymbol, humanSymbol));
                 board.ApplyMove(move, 0);
-                alpha = Math.Min(alpha, best);
+                alpha = Math.Max(alpha, best);
                 if (beta <= alpha) break;
             }
             return best;
