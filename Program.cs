@@ -1,5 +1,17 @@
+// Guillermo Blanco Núñez & Fiz Garrido Escudero
+
+
+
+
+/// <summary>
+/// Entry point for the Tic-Tac-Toe application.
+/// </summary>
 class Program
 {
+    /// <summary>
+    /// Main method that displays the menu and starts games.
+/// </summary>
+/// <param name="args">Command-line arguments (not used).</param>
     static void Main(string[] args)
     {
         while (true)
